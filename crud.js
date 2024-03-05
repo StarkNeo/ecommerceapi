@@ -95,4 +95,83 @@ const verifyToken = async (req, res) => {
         }
     }
 
-module.exports = { findUser, authenticateUser }
+//GET ALL PRODUCTS IN DB
+const getProducts = async()=>{
+    try {
+        let products = await client.query('SELECT * FROM products');
+        return products.rows;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getProductById=async(id)=>{
+    try {
+        let product =  await client.query('SELECT * FROM products WHERE id = $1',[id])
+        if (product.rows.length === 1) {
+            return product.rows;
+        }
+        else{
+            return "product does not exists";
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getProductsByDepartment=async(id)=>{
+    try {
+        let product =  await client.query('SELECT * FROM products WHERE department_id = $1',[id])
+        if (product.rows.length > 0) {
+            return product.rows;
+        }
+        else{
+            return "products do not exist";
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getProductsByCategory=async(id)=>{
+    try {
+        let product =  await client.query('SELECT * FROM products WHERE category_id = $1',[id])
+        if (product.rows.length > 0) {
+            return product.rows;
+        }
+        else{
+            return "products do not exist";
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getProductsBySubcategory=async(id)=>{
+    try {
+        let product =  await client.query('SELECT * FROM products WHERE subcategory_id = $1',[id])
+        if (product.rows.length > 0) {
+            return product.rows;
+        }
+        else{
+            return "products do not exist";
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getProductsByFilters=async(depId,catId,subId)=>{
+    try {
+        let products = await client.query('SELECT * FROM products WHERE department_id =$1 AND category_id = $2 AND subcategory_id = $3',[depId, catId, subId]);
+        if (products.rows.length > 0) {
+            return products.rows;
+        } else {
+            return "products do not exist"
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { findUser, authenticateUser, getProducts, getProductById, getProductsByDepartment, getProductsByCategory, getProductsByFilters, getProductsBySubcategory }

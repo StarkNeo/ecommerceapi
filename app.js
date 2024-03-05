@@ -29,3 +29,60 @@ app.post('/login',async(req,res)=>{
     }
     
 })
+
+//ENDPOINT TO RETRIEVE PRODUCTS AVAILABLE
+app.get('/products',async(req,res)=>{
+    try {
+        let response = await crud.getProducts();
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
+
+app.get('/products/:id', async(req, res)=>{
+    try {
+        let response = await crud.getProductById(req.params.id);
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
+
+app.get('/products/departments/:id',async(req, res)=>{
+    try {
+        let response = await crud.getProductsByDepartment(req.params.id);       
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
+
+app.get('/products/categories/:id',async(req, res)=>{
+    try {
+        let response = await crud.getProductsByCategory(req.params.id);       
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
+
+app.get('/products/subcategories/:id',async(req, res)=>{
+    try {
+        let response = await crud.getProductsBySubcategory(req.params.id);       
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
+
+app.get('/products/filtered/:departmentId/:categoryId/:subcategoryId',async(req, res)=>{
+    let {departmentId, categoryId,subcategoryId} = req.params;
+    console.log(req.params);
+    try {
+        let response = await crud.getProductsByFilters(departmentId, categoryId, subcategoryId);       
+        res.status(200).send({message:response});
+    } catch (error) {
+        res.status(400).send();
+    }
+})
